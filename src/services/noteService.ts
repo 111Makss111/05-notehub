@@ -26,9 +26,6 @@ export interface FetchNotesParams {
 export interface FetchNotesResponse {
   notes: Note[]
   totalPages: number
-  page: number
-  perPage: number
-  totalItems: number
 }
 
 export interface CreateNotePayload {
@@ -53,8 +50,6 @@ export async function fetchNotes({
       headers: getAuthHeaders(),
     }
   )
-
-  console.log(response.data)
 
   return response.data
 }

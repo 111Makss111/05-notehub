@@ -1,5 +1,6 @@
-import { type ComponentType } from 'react'
+import type { ComponentType } from 'react'
 import ReactPaginateModule from 'react-paginate'
+import type { ReactPaginateProps } from 'react-paginate'
 import css from './Pagination.module.css'
 
 interface PaginationProps {
@@ -8,40 +9,13 @@ interface PaginationProps {
   onPageChange: (page: number) => void
 }
 
-interface SelectedItem {
-  selected: number
-}
+type ModuleWithDefault<T> = { default: T }
 
-interface ReactPaginateProps {
-  breakLabel?: string
-  nextLabel?: string
-  previousLabel?: string
-  pageRangeDisplayed?: number
-  marginPagesDisplayed?: number
-  pageCount: number
-  forcePage?: number
-  onPageChange: (item: SelectedItem) => void
-  containerClassName?: string
-  pageClassName?: string
-  pageLinkClassName?: string
-  previousClassName?: string
-  previousLinkClassName?: string
-  nextClassName?: string
-  nextLinkClassName?: string
-  breakClassName?: string
-  breakLinkClassName?: string
-  activeClassName?: string
-  disabledClassName?: string
-}
-
-const ReactPaginate =
-  typeof ReactPaginateModule === 'function'
-    ? (ReactPaginateModule as ComponentType<ReactPaginateProps>)
-    : (
-        ReactPaginateModule as unknown as {
-          default: ComponentType<ReactPaginateProps>
-        }
-      ).default
+const ReactPaginate = (
+  ReactPaginateModule as unknown as ModuleWithDefault<
+    ComponentType<ReactPaginateProps>
+  >
+).default
 
 export default function Pagination({
   pageCount,
@@ -57,7 +31,7 @@ export default function Pagination({
       marginPagesDisplayed={1}
       pageCount={pageCount}
       forcePage={currentPage - 1}
-      onPageChange={({ selected }: SelectedItem) => onPageChange(selected + 1)}
+      onPageChange={(selectedItem) => onPageChange(selectedItem.selected + 1)}
       containerClassName={css.pagination}
       pageClassName={css.pageItem}
       pageLinkClassName={css.pageLink}
