@@ -1,3 +1,4 @@
+import { type ComponentType } from 'react'
 import ReactPaginateModule from 'react-paginate'
 import css from './Pagination.module.css'
 
@@ -11,10 +12,36 @@ interface SelectedItem {
   selected: number
 }
 
+interface ReactPaginateProps {
+  breakLabel?: string
+  nextLabel?: string
+  previousLabel?: string
+  pageRangeDisplayed?: number
+  marginPagesDisplayed?: number
+  pageCount: number
+  forcePage?: number
+  onPageChange: (item: SelectedItem) => void
+  containerClassName?: string
+  pageClassName?: string
+  pageLinkClassName?: string
+  previousClassName?: string
+  previousLinkClassName?: string
+  nextClassName?: string
+  nextLinkClassName?: string
+  breakClassName?: string
+  breakLinkClassName?: string
+  activeClassName?: string
+  disabledClassName?: string
+}
+
 const ReactPaginate =
   typeof ReactPaginateModule === 'function'
-    ? ReactPaginateModule
-    : ReactPaginateModule.default
+    ? (ReactPaginateModule as ComponentType<ReactPaginateProps>)
+    : (
+        ReactPaginateModule as unknown as {
+          default: ComponentType<ReactPaginateProps>
+        }
+      ).default
 
 export default function Pagination({
   pageCount,
