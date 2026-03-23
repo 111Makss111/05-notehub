@@ -12,11 +12,13 @@ export default function NoteList({ notes }: NoteListProps) {
 
   const deleteNoteMutation = useMutation({
     mutationFn: deleteNote,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['notes'] })
+    },
   })
 
-  const handleDelete = async (id: string) => {
-    await deleteNoteMutation.mutateAsync(id)
-    await queryClient.invalidateQueries({ queryKey: ['notes'] })
+  const handleDelete = (id: string) => {
+    deleteNoteMutation.mutate(id)
   }
 
   return (
